@@ -122,11 +122,17 @@ class mod_zoom_mod_form extends moodleform_mod {
         }
 
         // Add password.
-        $mform->addElement('passwordunmask', 'password', get_string('password', 'zoom'), array('maxlength' => '10'));
+        $mform->addElement('text', 'password', get_string('password', 'zoom'), array('maxlength' => '10'));
         // Check password uses valid characters.
         $regex = '/^[a-zA-Z0-9@_*-]{1,10}$/';
+        $mform->setDefault('password', rand(100000, 999999));
         $mform->addRule('password', get_string('err_password', 'mod_zoom'), 'regex', $regex, 'client');
         $mform->disabledIf('password', 'webinar', 'checked');
+        $mform->disabledIf('password', 'requirepassword', 'notchecked');
+
+         // Add password requirement prompt.
+         $mform->addElement('advcheckbox', 'requirepassword', get_string('requirepassword', 'zoom'));
+         $mform->setDefault('requirepassword', 1);
 
         // Add host/participants video (checked by default).
         $mform->addGroup(array(
